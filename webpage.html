@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Itim&family=Titillium+Web&display=swap" rel="stylesheet">  
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Itim&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Titillium+Web&display=swap" rel="stylesheet">
+  <title>Webpage Layout</title>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <style>
+
+    body {
+      margin: 0;
+      font-family: "Nunito", sans-serif;
+      font-optical-sizing: auto;
+      font-style: normal;
+    }
+
+    .fixed-background {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; 
+    background: url("webpage_background.png") center/cover no-repeat;
+    z-index: -1; 
+    align-items: center;
+    }
+
+    .content {
+    position: relative; 
+    z-index: 1;
+    padding: 20px;
+    }
+
+    .content, .fixed-background, .what-is-ai-background {
+        margin: 0; 
+        padding: 20px; 
+    }
+
+    /* Header Styles */
+    .header {
+      background: url("title_background.jpg") center/cover no-repeat;
+      font-family: Arial, Helvetica, sans-serif;
+      height: 200px;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 2;
+      position: relative;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      z-index: 2;
+      position: relative;
+    }
+
+    /* What is AI? Styles */
+    .what-is-ai-background{
+        background: url("what_is_GenAI.png") center/cover no-repeat;
+        margin: 20px auto;
+        max-width: 1500px; 
+        border-radius: 8px;
+        overflow: hidden; 
+        position: relative;
+    }
+
+    .what-is-ai-background::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.4); 
+        z-index: 1;
+    }
+
+    .what-is-ai-header{
+        font-family: "Itim", cursive;
+        font-style: normal;
+        font-size: 1.7rem; 
+        color: #333; 
+        text-align: center; 
+        position: relative;
+        z-index: 2; 
+    }
+    .section-header{
+        font-family: "Itim", cursive;
+        font-style: normal;
+        font-size: 1.7rem; 
+        color: #333;
+        text-align: center;
+    }
+
+    .what-is-ai-information{
+        font-size: 1.1rem; 
+        font-weight: 600;
+        color: #000; 
+        text-align: left; 
+        margin: 20px auto;
+        max-width: 700px; 
+        position: relative;
+        z-index: 2; 
+    }
+
+    .what-is-ai-information br{
+        content: "";
+        display: block; 
+        margin-bottom: 20px; 
+    }
+
+    /* Row Information Section */
+    .info-section {
+      display: flex;
+      flex-direction: column;
+      padding: 0px;
+      border-top: 2px solid #000;
+      max-width: 700px; 
+      margin: 0 auto; 
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      border-bottom: 2px solid black;
+      min-width: 700px; 
+    }
+
+    .info-photo {
+      width: 175px;
+      height: 175px;
+      border-radius: 50%;
+      background: url("pic.png") center/cover no-repeat; 
+      margin-right: 20px;
+    }
+
+    .info-text {
+      flex: 1;
+    }
+
+    .info-text h2{
+        font-size: 2 rem;
+    }
+  
+    .info-text br{
+        content: "";
+        display: block; 
+        margin-bottom: 20px; 
+    }
+
+    /* Flip Card Section */
+    .flip-card-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 2 cards per row */
+        gap: 100px; /* Space between cards */
+        margin: 40px auto;
+        max-width: 750px; /* Center container and set max width */
+    }
+
+    /* Adjust flip-card styles */
+    .flip-card {
+        width: 100%; /* Take full width in the grid */
+        height: 180px; /* Consistent height */
+        perspective: 1000px;
+    }
+
+    .flip-card-inner {
+    position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        transform-origin: center;
+    }
+
+    .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .flip-card-front {
+        background-color: #f3f3f3;
+        color: #000;
+        font-size: 1rem;
+    }
+
+    .flip-card-back {
+        background-color: #333;
+        color: #000;
+        transform: rotateY(180deg);
+        font-size: 0.75rem;
+    }
+
+    .flip-card-back br{
+        content: "";
+        display: block; 
+        margin-bottom: 20px; 
+    }
+
+    .flip-card-icon {
+        width: 100px; 
+        height: 100px;
+        margin-bottom: 0px; 
+    }
+
+    .flip-card-front, .flip-card-back {
+        flex-direction: column; 
+        text-align: center; 
+    }
+
+    .card-1 .flip-card-front {
+        background-color: #4cccff; 
+        color: black;
+    }
+
+    .card-1 .flip-card-back {
+        background-color: #4cccff; 
+        color: black;
+    }
+
+    .card-2 .flip-card-front {
+        background-color: #fa6abc; 
+        color: black;
+    }
+
+    .card-2 .flip-card-back {
+        background-color: #fa6abc; 
+        color: black;
+    }
+
+    .card-3 .flip-card-front {
+        background-color: #fff374; 
+        color: black;
+    }
+
+    .card-3 .flip-card-back {
+        background-color: #fff374; 
+        color: black;
+    }
+
+    .card-4 .flip-card-front {
+        background-color: #7af9a2; 
+        color: black;
+    }
+
+    .card-4 .flip-card-back {
+        background-color: #7af9a2; 
+        color: black;
+    }
+
+    .section-header-2 {
+        font-family: "Itim", cursive;
+        font-style: normal;
+        font-size: 1.7rem; 
+        color: #333;
+        text-align: center;
+        padding-top: 30px; 
+    }
+
+    ul {
+         list-style-type: disc; 
+          width: 100%; 
+          max-width: 700px; 
+          margin: 20px auto;
+          padding-left: 40px;
+        }
+
+    ul li {
+          margin-bottom: 15px;
+        }
+    
+    .button-container {
+        text-align: center; 
+        margin-top: 40px; 
+        display: flex;
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center; 
+        margin-top: 0px;
+        width: 100%; 
+    }
+
+    .pink-button {
+        margin-top: 0px;
+        display: flex;
+        min-width: 365px;
+        background-color: #f8238d; 
+        color: #fff;
+        border: none;  
+        padding: 20px 40px; 
+        font-size: 24px; 
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 300;
+        cursor: pointer; 
+        transition: background-color 0.3s ease, text-decoration 0.3s ease;
+        z-index: 2;
+    }
+
+    .pink-button:hover {
+      background-color: #d6177d; 
+      text-decoration: underline; 
+    }
+
+  .pink-button:active {
+      background-color: #b0156d; /* Darker shade for active click */
+    }
+
+    .button-text {
+        display: flex;
+        margin-top: 10px; 
+        font-size: 30px; 
+        color: white; 
+        align-items: center;
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <h1>All About Gen AI</h1>
+  </div>
+  <!--What is GenAI section-->
+  <div class = "what-is-ai-background">
+  <div class="what-is-ai-header">
+    <div data-aos="fade-down" data-aos-delay="500"><h1> What is Gen AI? </h1></div>
+  </div>
+  <div class="what-is-ai-information">
+    <div data-aos="fade-right" data-aos-delay="1000"><p> Generative artificial intelligence, or Gen AI for short, is an algorithm of artificial intelligence designed to create new content, such as text, media, as well as synthetic data. With Gen AI, content is created faster, which makes its intepretation, implementation and distribution much more efficient. </br> For example, AI may be used in businesses to write automated emails. AI can also help make improvements to a service quickly, such as code which may be difficult to read. </br> However, Gen AI has its downsides too such as not being so accurate by omitting or downplaying information from sources. Additionally,an overreliance on GenAI can impede critical thinking and decision-making, stunting learning and development. </br> <i>From <a href="https://www.techtarget.com/searchenterpriseai/definition/generative-AI"> https://www.techtarget.com/searchenterpriseai/definition/generative-AI </a>. </i> </p> </div>
+  </div>
+ </div>
+  <!-- Information Section (Uses of AI)-->
+  <div class="fixed-background"></div>
+    <div class="content">
+   <div class="section-header" data-aos-duration="400" data-aos-delay="500">
+    <div data-aos="fade-down">
+    <h1> Some uses of Gen AI </h1>
+   </div>
+   </div>
+  <div class="info-section">
+    <div class="info-row">
+      <div data-aos="zoom-in" data-aos-duration="500" data-aos-delay="100">
+      <div class="info-photo" style="background-image: url('info1.png');"></div>
+      </div>
+      <div class="info-text">
+        <div data-aos="fade-left" data-aos-delay="800">
+        <h2>Text</h2>
+        <p>Gen AI can be used to create text. This can be used in many ways such as idea generation and feedback. For example, if a student needs help with their assignment, they can ask GenAI for help and the GenAI will give them the help through suggestions or ideas. GenAI can also generate text from audio, videos and imagery, such as providing a caption to a picture.</p>
+      </div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div data-aos="zoom-in" data-aos-duration="500" data-aos-delay="900">
+      <div class="info-photo" style="background-image: url('info2.png');"></div>
+      </div>
+      <div class="info-text">
+        <div data-aos="fade-left" data-aos-delay="1600">
+        <h2>Images</h2>
+        <p>Gen AI is also used to create visual imagery such as artworks and designs. For artists, this can be used to suggest new creative possibilities and help them ideate unique processes. It can also be used to create special effects in videos effectively and help in creating characters or scenes for movies. People who do not do art can easily generate images such as artworks for thir own personal use.</p>
+      </div>
+    </div>
+    </div>
+    <div class="info-row">
+      <div data-aos="zoom-in" data-aos-duration="500" data-aos-delay="1400">
+      <div class="info-photo" style="background-image: url('info3.png');"></div>
+      </div>
+        <div class="info-text">
+        <div data-aos="fade-left" data-aos-delay="2000">
+        <h2>Videos</h2>
+        <p>Gen AI can be used to create videos for those who are not very specialised in video editing/filming. For instance, they can type in a prompt and a video tailored to them would be generated. This can be used in education, employment and much more. Additionally, GenAI can morph prompted videos. For example, transforming fruits to animals, changing the medium to animation or adding new things.</p>
+      </div>
+      </div>
+      </div>
+    <div class="info-row">
+      <div data-aos="zoom-in" data-aos-duration="500" data-aos-delay="3100">
+        <div class="info-photo" style="background-image: url('info4.png');"></div>
+      </div>
+        <div class="info-text">
+        <div data-aos="fade-left" data-aos-delay="3800">
+        <h2>Audio</h2>
+        <p> Gen AI can create audio, which includes music or speeches based on a prompt given. For instance, if someone wants to create punk rock music, they can type the genre as a prompt into the AI and a song will be generated. Audio can also be generated through text-to-speech generators, where text typed in turns into speech, which can be helpful to those with visual disabilities.</p>
+      </div>
+      </div>
+      </div>
+  </div>
+  <!-- Flip Card Section -->
+  <div class="section-header">
+    <div data-aos="fade-down">
+      <h1> How Gen AI works </h1>
+    </div>
+ </div>
+  <div class="flip-card-section">
+    <!-- Flip Card 1 -->
+    <div data-aos="fade-zoom-in" data-aos="flip-left" data-aos-duration="400" data-aos-delay="200">
+    <div class="flip-card">
+    <div class="flip-card card-1">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="flipcard1.png" alt="Tools Icon" class="flip-card-icon" />
+          <h3>1. Training</h3>
+        </div>
+        <div class="flip-card-back">
+          <p>Gen AI models are given large sets of databases that contain text, images and other content sources. This data are cleaned and preprocessed to make sure that it is usable and consistent. </br> This is done through numerical representation (vectors) that the AI can understand. The AI then analyses the data, creating content based on the data it is presented with.</p>
+        </div>
+      </div>
+      </div>
+    </div>
+    </div>
+    
+    <!-- Flip Card 2 -->
+    <div data-aos="fade-zoom-in" data-aos="flip-left" data-aos-duration="400" data-aos-delay="400">
+    <div class="flip-card">
+        <div class="flip-card card-2">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="flipcard2.png" alt="Tools Icon" class="flip-card-icon" />
+          <h3>2. Learning</h3>
+        </div>
+        <div class="flip-card-back">
+          <p>When being fed with large amounts of datasets, the AI model starts to recognise patterns, relationships and structures in these datasets. </br> For instance, chatbots learn the context and the language usage and rules from text data. This helps these generators create relevant content based on the patterns it has learned.</p>
+        </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    
+    <!-- Flip Card 3 -->
+    <div data-aos="fade-zoom-in" data-aos="flip-left" data-aos-duration="400" data-aos-delay="400">
+    <div class="flip-card">
+        <div class="flip-card card-3">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="flipcard3.png" alt="Tools Icon" class="flip-card-icon" />
+          <h3>3. Fine-tuning</h3>
+        </div>
+        <div class="flip-card-back">
+          <p>After the initial training. the AI model will be given more specific and nuanced datasets to analyse. </br> By analysing these more domain-related databases, the AI model would be able to give more relevant and accurate answers. This ensures that the AI model produces content for more intended uses.</p>
+        </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    
+    <!-- Flip Card 4 -->
+    <div data-aos="fade-zoom-in" data-aos="flip-left" data-aos-duration="400" data-aos-delay="600">
+    <div class="flip-card">
+    <div class="flip-card card-4">  
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img src="flipcard4.png" alt="Tools Icon" class="flip-card-icon" />
+          <h3>4. Feedback and Generation</h3>
+        </div>
+        <div class="flip-card-back">
+          <p>The AI subsequently learns more and generates new and updated content based on users' feedback, new prompts. The AI model may be implemented with feedback loops, where users' interactions can rectify the mistakes in the AI. </br> By leveraging on the feedback, the AI model ensures its iterations are accurate and aligns more closely with users' requirements.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </div>
+
+    <!--Future & Statistics of AI-->
+    <div class="section-header-2">
+        <div data-aos="fade-down" data-aos-delay="600">
+          <h1> The growing Gen AI industry </h1>
+        </div>
+    </div>
+    <ul>
+      <div data-aos="fade-right" data-aos-delay="800"><li>According to <a href="https://www.precedenceresearch.com/generative-ai-market#:~:text=Share%20With%20:-,Generative%20AI%20Market%20Size%20and%20Growth,drive%20generative%20AI%20market%20growth.">Precedence Research</a>, the market size of Gen AI is expected to grow at a compound annual growth rate of 46.5% from 2024 to 2033. Previously valued at $17.65 billion in 2023, this market is expected to reach $803.9 billion by 2033.</li></div>
+      <div data-aos="fade-right" data-aos-delay="1000"><li>In <a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai">a survey done by McKinsey</a>, the percentage of businesses using Gen AI  increased from 33% to 65% percent from 2023 to 2024, and is mostly used for marketing and sales. An increasing number of people said that they regularly used AI outside in work in 2024 compared to 2023. </li></div>
+      <div data-aos="fade-right" data-aos-delay="1200"><li>The usage of Gen AI in businesses is expected to surge this year (2024), mainly focusing on <a href="https://dataforest.ai/blog/the-future-of-generative-ai-huge-and-not-always-explained#:~:text=What%20are%20the%20predictions%20of,the%20need%20for%20responsible%20development."> practical applications such as automation and content creation. Gen AI is also predicted by experts to reach a median of human-level performance by the year 2030. </a></li></div>
+      <div data-aos="fade-right" data-aos-delay="1400"><li>AI is expected to evolve over the years, eventually being able to adopt new practices such as being able to generate an entire video from scratch or coordinating with other software and people to accomplish goals. </li></div>
+    </ul>
+    <!--Button Section -->
+    <div class="section-header-2">
+      <div data-aos="fade-down" data-aos-delay="2000">
+        <h1>Test your knowledge!</h1>
+      </div>
+    </div>
+    <div class="button-container">
+      <button class="pink-button" onclick="goToQuiz()"> <b>CLICK HERE FOR QUIZ</b></button>
+    </div>
+    <div class="section-header-2">
+      <div data-aos="fade-down" data-aos-delay="1500">
+        <h1>Let's play a game!</h1>
+      </div>
+    </div>
+    <div class="button-container">
+      <button class="pink-button" onclick="goToPage()"> <b>CLICK HERE FOR INTERACTIVE TUTORIAL</b></button>
+    </div>
+    <script>
+      AOS.init();
+      function goToPage() {
+          window.location.href = "100.html"; 
+      }
+      function goToQuiz() {
+          window.location.href = "https://take.quiz-maker.com/Q65MEGAEQ"; 
+      }
+    </script>
+    </div>
+ </body>
+ </html>

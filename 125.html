@@ -1,0 +1,190 @@
+<html>
+    <head>
+        <title>IMDA Bite-Sized AI Content</title>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <style>
+            #container {
+                background-color: rgb(101, 230, 206);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding-top: 350px;
+                padding-left: 20px;
+                padding-right: 20px;
+                position: relative;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f3f3f3;
+                font-family: Arial, sans-serif;
+            }
+
+            .back-button {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                text-decoration: none;
+                color: #b00000;
+                font-size: 16px;
+                display: inline-block;
+                transition: color 0.3s ease;
+                z-index: 1000;
+                padding: 10px;
+            }
+
+            .back-button:hover {
+                text-decoration: underline;
+                color: #db0404;
+            }
+
+            .back-button::before {
+                margin-right: 8px;
+                font-size: 16px;
+                display: inline-block;
+            }
+
+            .center-image {
+                max-width: 700px;
+                max-height: 700px;
+                height: auto;
+                margin-bottom: 0px;
+            }
+
+            .title {
+                font-family: sans-serif;
+                font-weight: 800;
+                font-style: normal;
+                font-size: 36px;
+                text-align: center;
+                margin-bottom: 10px;
+                max-width: 80%;
+                color: #000000;
+            }
+
+            .subtitle {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: 600;
+                font-style: normal;
+                font-size: 24px;
+                text-align: center;
+                margin-bottom: 10px;
+                max-width: 80%;
+                color: #000000;
+            }
+
+            .description {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: 400;
+                font-style: normal;
+                font-size: 16px;
+                color: #000;
+                text-align: left;
+                margin-bottom: 20px;
+                max-width: 80%;
+                line-height: 1.6;
+            }
+
+            .description br {
+                content: "";
+                display: block;
+                margin-bottom: 20px;
+            }
+
+            .description ul {
+                margin-left: 20px;
+                padding-left: 20px;
+            }
+
+            .description li {
+                margin-bottom: 15px;
+            }
+
+            .button-container {
+                display: flex;
+                gap: 10px;
+            }
+
+            .center-button {
+                background-color: #007BFF;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                font-size: 16px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                align-self: center;
+            }
+
+            .center-button:hover {
+                background-color: #0056b3;
+            }
+
+            .restart-button {
+                background-color: #28a745;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                font-size: 16px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .restart-button:hover {
+                background-color: #218838;
+            }
+
+            .closing-message {
+                font-size: 16px;
+                text-align: center;
+                margin-top: 20px;
+                color: #000000;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <a href="javascript:void(0);" class="back-button" onclick="goBack()"> ← Back to previous page </a>
+            <img src="125_codi.png" class="center-image">
+            <p class="title"> Congratulations! </p>
+            <p class="subtitle"> Thanks for playing this interactive game! </p>
+            <p class="description"> But wait! Before you go, here are some tips for generating better outputs with Generative AI:
+                <ul>
+                    <li><b>Be Specific:</b> Clearly define what you want. The more details you provide—such as tone, style, audience, and context—the more focused and relevant the output will be. For example, instead of just saying "A poem about cats", specify the tone, style, setting, and any key events you want to include. A more specific prompt would be: "Write a whimsical haiku from the perspective of a mischievous cat, sneaking around at night, with imagery of moonlight and shadows, and a playful tone".</li>
+                    <li><b>Experiment with Variations:</b> If you're unsure, try asking for different outputs. For example, request multiple versions or different angles on the same topic to explore a range of ideas. This helps you find the approach that best fits your needs. You can also use negative outputs, such as "A mountainous landscape without rivers and forests".</li>
+                    <li><b>Iterate and Refine:</b> Don't hesitate to adjust your prompt based on the results you get. If the output isn't quite what you wanted, tweak your prompt with more details, clarify your instructions, or ask for specific changes to improve the results.</li>
+                </ul>
+                <p class="closing-message">We hope you have a better knowledge of Gen AI! Go to the webpage to find out more! </p>
+            </p>
+            <div class="button-container">
+                <button class="center-button" onclick="goToPage()">Go to webpage</button>
+                <button class="restart-button" onclick="restartGame()">Restart the game</button>
+            </div>
+        </div>
+
+        <script>
+            AOS.init();
+
+            function goBack() {
+                window.history.back();
+            }
+
+            function goToPage() {
+                window.location.href = "webpage.html";
+            }
+
+            function restartGame() {
+                window.location.href = "100.html";
+            }
+        </script>
+    </body>
+</html>

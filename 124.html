@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IMDA Bite-Sized AI Content</title>
+    <style>
+        html {
+        overflow: hidden; 
+        }  
+
+      #container {
+        background-color: rgb(101, 230, 206);
+        width: 960px;
+        height: 540px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        box-sizing: border-box;
+        padding: 20px;
+        position: relative;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-family: sans-serif;
+        margin: 0;
+        background-color: #f3f3f3; 
+        overflow: hidden;
+      }
+
+      .back-button, .next-button {
+      text-decoration: none;
+      font-size: 16px;
+      position: absolute;
+      top: 40px;
+      transition: color 0.3s ease;
+      z-index: 10;
+    }
+
+    .back-button {
+      color: #b00000;
+      left: 40px;
+    }
+
+    .back-button:hover {
+      text-decoration: underline;
+      color: #db0404;
+    }
+
+    .next-button {
+      color: #008c23;
+      right: 40px;
+      display: none;
+    }
+
+    .next-button:hover {
+      text-decoration: underline;
+      color: #03b92a;
+    }
+
+      .instructions {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+        max-width: 700px;
+      }
+
+      .player {
+        background-color: #2f85d5;
+        width: 330px;
+        height: 190px;
+        position: relative;
+        border-radius: 8px;
+        box-shadow: 0 8px 0 0 #2777be;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .record {
+        height: 175px;
+        width: 175px;
+        background-color: #181312;
+        border-radius: 50%;
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .record:before,
+      .record:after {
+        position: absolute;
+        content: "";
+        border: 5px solid transparent;
+        border-top-color: #2c2424;
+        border-bottom-color: #2c2424;
+        border-radius: 50%;
+      }
+
+      .record:before {
+        height: 135px;
+        width: 135px;
+      }
+
+      .record:after {
+        height: 95px;
+        width: 95px;
+      }
+
+      .label {
+        background-color: #181312;
+        height: 15px;
+        width: 15px;
+        border: 20px solid #e6af2f;
+        border-radius: 50%;
+      }
+
+      .tone-arm {
+        height: 90px;
+        width: 6px;
+        background-color: #ffffff;
+        position: absolute;
+        top: 25px;
+        right: 95px;
+        transition: 1s;
+        transform-origin: top;
+      }
+
+      .control {
+        background-color: #181312;
+        height: 17px;
+        width: 17px;
+        border: 10px solid #2c2c2c;
+        border-radius: 50%;
+        position: absolute;
+        top: -16px;
+        left: -16px;
+      }
+
+      .tone-arm:before {
+        content: "";
+        height: 40px;
+        width: 6px;
+        background-color: #ffffff;
+        position: absolute;
+        transform: rotate(30deg);
+        bottom: -36px;
+        right: 10px;
+      }
+
+      .tone-arm:after {
+        content: "";
+        position: absolute;
+        height: 0;
+        width: 10px;
+        border-top: 18px solid #b2aea6;
+        border-left: 2px solid transparent;
+        border-right: 2px solid transparent;
+        top: 108px;
+        right: 12.5px;
+        transform: rotate(30deg);
+      }
+
+      .btn {
+        height: 28px;
+        width: 28px;
+        background-color: #5ba3fb;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 20px;
+        right: 30px;
+        border: none;
+        border: 3.5px solid #2772be;
+        outline: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .btn.active {
+        background-color: #003a80;
+      }
+
+      .slider {
+        -webkit-appearance: none;
+        appearance: none;
+        transform: rotate(-90deg);
+        width: 90px;
+        height: 7px;
+        position: absolute;
+        left: 233px;
+        top: 60px;
+        background-color: #2777be;
+        outline: none;
+        border-radius: 3px;
+        border: 6px solid #5099ed;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 10px;
+        height: 12px;
+        background-color: #ffffff;
+        cursor: pointer;
+      }
+
+      .play {
+        transform: rotate(30deg);
+        transform-origin: top;
+        transition: 1s;
+      }
+
+      .on {
+        animation: spin 3s 1s linear infinite;
+      }
+
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .message {
+            font-size: 18px;
+            font-weight: normal;
+            margin: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+      .rain-image {
+      position: absolute;
+      top: 0;
+      left: calc(50% - 20px);
+      animation: fall linear 5s;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <a href="123.html" class="back-button"> &larr; Back </a>
+      <a href="125.html" class="next-button" id="next-button"> Next &rarr; </a>
+      <div class="message" id="musicMessage"></div>
+      <p class="instructions"> To play the audio, click the button on the bottom right to generate your sound! </br> Click the button again to make the sound stop playing. </p>
+      <div class="player">
+        <div class="record">
+          <div class="label"></div>
+        </div>
+        <div class="tone-arm">
+          <div class="control"></div>
+        </div>
+        <button class="btn"></button>
+        <div class="slider-container">
+          <input type="range" class="slider" min="0" max="1" step="0.1" value="0.7" />
+        </div>
+        <audio loop class="my-song" src="Home.mp3" preload="auto"></audio>
+      </div>
+    </div>
+    <script>
+        let state = false;
+        let rainTriggered = false;
+        let btn = document.querySelector(".btn");
+        let record = document.querySelector(".record");
+        let toneArm = document.querySelector(".tone-arm");
+        let song = document.querySelector(".my-song");
+        let slider = document.querySelector(".slider");
+
+        function getQueryParameter(param) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(param);
+        }
+
+        const songChoice = getQueryParameter('song');
+        let songSrc, rainImageSrc, message;
+
+        switch (songChoice) {
+            case '1':
+                songSrc = '124_rap.mp3';
+                rainImageSrc = '124_rap_rain.png';
+                message = "You have decided to make rap music.";
+                break;
+            case '2':
+                songSrc = '124_calming.mp3';
+                rainImageSrc = '124_calming_rain.png';
+                message = "You have decided to make calming music.";
+                break;
+            case '3':
+                songSrc = '124_forest.mp3';
+                rainImageSrc = '124_forest_rain.png';
+                message = "You have decided to make ambient noises.";
+                break;
+            default:
+                songSrc = '124_default.mp3';
+                message = "Did you immediately come here? Go back to choose your music!";
+        }
+
+        song.src = songSrc;
+
+        const messageElement = document.getElementById('musicMessage');
+        messageElement.textContent = message;
+
+        btn.addEventListener("click", () => {
+        if (state == false) {
+            record.classList.add("on");
+            toneArm.classList.add("play");
+            btn.classList.add("active");
+            setTimeout(() => {
+                song.play();
+            }, 1000);
+            if (!rainTriggered) {
+                rainTriggered = true;
+                rainImages(rainImageSrc);
+            }
+            document.getElementById("next-button").style.display = 'block'; 
+        } else {
+            record.classList.remove("on");
+            toneArm.classList.remove("play");
+            btn.classList.remove("active");
+            song.pause();
+            document.getElementById("next-button").style.display = 'none'; 
+        }
+            state = !state;
+        });
+
+
+        slider.addEventListener("input", (e) => {
+            song.volume = Number(e.target.value);
+        });
+
+        function rainImages(imageSrc) {
+            for (let i = 0; i < 20; i++) {
+                const img = document.createElement('img');
+                img.src = imageSrc;
+                img.classList.add('rain-image');
+                img.style.left = `${Math.random() * 100}%`;
+                img.style.animationDuration = `${2 + Math.random() * 3}s`;
+                img.style.position = 'absolute';
+                img.style.width = `${Math.random() * 30 + 20}px`; 
+                img.style.height = 'auto';
+                img.style.top = '-50px';
+                img.animationName = 'fall';
+                img.style.animationDelay = `${Math.random() * 2}s`;
+                img.style.pointerEvents = 'none';
+
+                document.body.appendChild(img);
+
+                img.addEventListener('animationend', () => {
+                    img.remove();
+                });
+            }
+        }
+    </script>
+  </body>
+</html>
