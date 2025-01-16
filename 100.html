@@ -1,0 +1,159 @@
+<html>
+    <head>
+        <title>IMDA Bite-Sized AI Content</title>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <style>
+            #container {
+                background-color: rgb(101, 230, 206);
+                width: 960px;
+                height: 540px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden; 
+                box-sizing: border-box; 
+                padding: 20px; 
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f3f3f3; 
+                font-family: Arial, sans-serif;
+            }
+
+            .back-button {
+                text-decoration: none;
+                color: #0600ae; 
+                font-size: 16px;
+                display: inline-block;
+                position: relative;
+                top: 0px;
+                left: -380px; 
+                transition: color 0.3s ease;
+                z-index: 10;
+            }
+
+            .back-button:hover {
+                text-decoration: underline;
+                color: #fff; 
+            }
+
+            .back-button::before {
+                margin-right: 8px;
+                font-size: 16px;
+                display: inline-block;
+            }
+
+            .center-image {
+                max-width: 80%;
+                max-height: 40%; 
+                height: auto;
+                margin-bottom: 0px;
+            }
+
+            .title {
+                font-family:sans-serif;
+                font-weight: 800;
+                font-style: normal;
+                font-size: 36px;
+                text-align: center;
+                margin-bottom: 10px;
+                max-width: 80%; 
+                color:#000000;
+            }
+
+            .description{
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: 400;
+                font-style: normal;
+                font-size: 16px;
+                color: #000; 
+                text-align: center;
+                margin-bottom: 20px;
+                max-width: 80%; 
+            }
+
+            .description br{
+            content: "";
+            display: block; 
+            margin-bottom: 20px; 
+            }
+
+            
+            .center-button {
+                background-color: #007BFF; 
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                font-size: 16px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                align-self: center; 
+            }
+
+            .center-button:hover {
+                background-color: #0056b3; 
+            }
+            
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <a href="webpage.html" class="back-button"> ← Back to webpage </a>
+            <img src="100_codi.png" class="center-image">
+            <p class="title">
+            Hi there! </p>  
+            <p class= "description" data-aos="fade-down" data-aos-delay="1000" data-aos-duration="900" > I’m Codi, the in-residence robot from IMDA. Whether you are just beginning or have some experience with artificial intelligence, I'm here to explore the exciting world of Gen AI with you 😊! </br> The rules of the game are simple: choose whatever you want to generate, in the style you want with the options given to you. Ready to see what AI can do? Let's get started 🎮!</p>
+            <button class="center-button" onclick="goToPage()">Let's go!</button>
+        </div>
+        <script>
+            AOS.init();
+            function goToPage() {
+                window.location.href = "101.html"; 
+            }
+            var theLetters = "abcdefghijklmnopqrstuvwxyz#%&^+=-"; 
+            var ctnt = "Hi there!"; 
+            var speed = 35;
+            var increment = 2; 
+            var clen = ctnt.length;       
+            var si = 0;
+            var stri = 0;
+            var block = "";
+            var fixed = "";
+
+            (function rustle(i) {          
+                setTimeout(function () {
+                    if (--i) { rustle(i); }
+                    nextFrame(i);
+                    si = si + 1;        
+                }, speed);
+            })(clen * increment + 1); 
+
+            function nextFrame(pos) {
+                for (var i = 0; i < clen - stri; i++) {
+                    var num = Math.floor(theLetters.length * Math.random());
+                    var letter = theLetters.charAt(num);
+                    block = block + letter;
+                }
+                if (si == (increment - 1)) {
+                    stri++;
+                }
+                if (si == increment) {
+                    fixed = fixed + ctnt.charAt(stri - 1);
+                    si = 0;
+                }
+                document.querySelector(".title").innerHTML = fixed + block;
+                block = "";
+            }
+        </script>
+    </div>
+    </body>
+</html>

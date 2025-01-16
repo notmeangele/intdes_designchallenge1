@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>IMDA Bite-Sized AI Content</title>
+        <style>  
+            html {
+                overflow: hidden; 
+            }   
+            
+            #container {
+                background-color: rgb(101, 230, 206);
+                width: 960px;
+                height: 540px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden; 
+                box-sizing: border-box; 
+                padding: 20px; 
+                position: relative;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f3f3f3; 
+                font-family: Arial, sans-serif;
+            }
+
+            .back-button,
+            .next-button {
+                text-decoration: none;
+                font-size: 16px;
+                position: absolute;
+                top: 40px; 
+                transition: color 0.3s ease;
+                z-index: 10;
+            }
+
+            .back-button {
+                color: #b00000; 
+                left: 40px; 
+            }
+
+            .back-button:hover {
+                text-decoration: underline;
+                color: #db0404; 
+            }
+
+            .next-button {
+                color: #008c23; 
+                right: 40px; 
+                display: none; 
+            }
+
+            .next-button:hover {
+                text-decoration: underline;
+                color: #03b92a; 
+            }
+
+            .center-image-container {
+                position: relative; 
+                width: 808px; 
+                height: 268px;
+                margin-top: 20px; 
+                overflow: hidden; 
+            }
+
+            .center-image-container img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .tooltip {
+                position: absolute;
+                background-color: black;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-size: 14px;
+                display: none; 
+                white-space: nowrap;
+                pointer-events: none; 
+            }
+
+            .hover-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 10;
+            }
+
+            .hover-area {
+                fill: rgba(255, 0, 255, 0.5); 
+                pointer-events: none;
+            }
+
+            .selected-area {
+                fill: rgba(255, 0, 255, 0.5);
+                stroke: magenta;
+                stroke-width: 3;
+            }
+
+            .options-container {
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                border-radius: 8px;
+                width: 800px;
+                display: flex;
+                gap: 15px;
+            }
+
+            .option {
+                padding: 10px 20px; 
+                background-color: #007bff;
+                color: white; 
+                border: none; 
+                border-radius: 5px; 
+                text-align: center; 
+                cursor: pointer; 
+                }
+
+            .option:hover {
+                background-color: #0056b3; 
+            }
+
+            .option.selected {
+                background-color: #0056b3;
+                color: white;
+            }
+        
+            .question{
+                margin-top: 20px;
+            }
+
+            .selected-area {
+                fill: rgba(255, 0, 255, 0.5);
+                stroke: magenta;
+                stroke-width: 3;
+            }
+
+            .prompt-text {
+                font-weight: bold;
+                font-size: 20px;
+                text-align: center;
+                margin: 10px 0;
+                color: black;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <a href="105.html" class="back-button"> ← Back </a>
+            <a href="#" class="next-button" id="next-button"> Next → </a>
+            <div class="center-image-container">
+                <img src="106_pic.png" usemap="#image-map">
+                <svg class="hover-overlay"></svg> 
+                <div id="tooltip" class="tooltip"></div>
+                <map name="image-map">
+                    <area target="" alt="Area 1" title="Area 1" href="#" coords="51,211,154,212,191,211,168,174,179,131,72,131" shape="poly" data-tooltip="This is Area 1">
+                    <area target="" alt="Area 2" title="Area 2" href="#" coords="220,209,293,211,293,194,274,194,290,183,294,168,289,146,280,133,264,128,293,130,293,165,303,164,304,133,338,133,339,107,304,2,213,2,174,109,173,131,245,130,234,133,225,145,219,160,222,177,228,185,238,195,224,195" shape="poly" data-tooltip="This is Area 2">
+                    <area target="" alt="Area 3" title="Area 3" href="#" coords="467,176,499,137,512,138,572,70,583,71,615,113,634,115,647,130,673,102,686,112,718,154,751,155,766,173,752,196,737,178,716,184,698,188,692,187,691,163,683,163,685,190,670,188,669,161,651,161,650,182,638,188,634,181,622,181,617,187,617,157,607,155,606,151,594,151,592,178,576,178,570,146,563,129,554,154,545,202,534,185,512,185,509,161,492,161,491,201,482,200,477,187" shape="poly" data-tooltip="This is Area 3">
+                    <area target="" alt="" title="" href="" coords="38,210,320,269" shape="rect" onclick="alert('That\'s your drawer!')">
+                    <area target="" alt="" title="" href="" coords="772,226,750,207,751,179,734,176,714,186,699,189,690,186,690,162,684,162,683,185,672,190,668,161,652,163,648,181,638,187,635,183,618,181,615,160,603,156,602,150,594,151,592,178,576,177,572,146,564,132,552,153,548,196,539,188,525,185,511,188,509,160,490,162,490,201,484,195,473,181,477,211,468,217,464,226,638,226,701,226" shape="poly"onclick="alert('The city looks nice,doesn\'t it?')">
+                    <area target="" alt="" title="" href="" coords="441,49,438,225,448,236,469,226,483,204,452,149,470,149,502,129,536,88,556,50" shape="poly" onclick="alert('Want to draw the curtains?')">
+                    <area target="" alt="" title="" href="" coords="675,50,791,51,794,232,770,229,762,214,749,205,778,152,751,144,722,120,698,90" shape="poly" onclick="alert('Want to draw the curtains?')">
+                </map>
+            </div>
+            <div class="question">
+                <p> Which style would you like to generate your image in? </p>
+            </div>
+            <div class="options-container">
+                <button class="option" data-style="Realistic">Realistic</button>
+                <button class="option" data-style="Illustration">Illustration</button>
+                <button class="option" data-style="Abstract">Abstract</button>
+            </div>
+            <div id="prompt-display" class="prompt-text">Prompt: ... in the ... style</div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+            const areas = document.querySelectorAll("area");
+            const options = document.querySelectorAll(".option");
+            const promptDisplay = document.getElementById("prompt-display");
+            const hoverOverlay = document.querySelector(".hover-overlay");
+            const glowingAreas = ["Area 1", "Area 2", "Area 3"];
+            const areaTextMapping = {
+                "Area 1": "A family portrait",
+                "Area 2": "A dimly lit bedroom",
+                "Area 3": "A mountainous landscape",
+            };
+
+            const pageMapping = {
+                "Realistic": {
+                    "Area 1": "107.html",
+                    "Area 2": "110.html",
+                    "Area 3": "113.html",
+                },
+                "Illustration": {
+                    "Area 1": "108.html",
+                    "Area 2": "111.html",
+                    "Area 3": "114.html",
+                },
+                "Abstract": {
+                    "Area 1": "109.html",
+                    "Area 2": "112.html",
+                    "Area 3": "115.html",
+                },
+            };
+
+            let selectedMagentaArea = "..."; 
+            let selectedStyle = "..."; 
+
+            const nextButton = document.getElementById("next-button");
+
+            function updatePrompt() {
+                const areaText = areaTextMapping[selectedMagentaArea] || "...";
+                promptDisplay.textContent = `Prompt: ${areaText} in the ${selectedStyle} style`;
+
+                if (selectedMagentaArea && selectedStyle !== "...") {
+                    nextButton.style.display = "block";
+                    nextButton.addEventListener("click", () => {
+                        const nextPage = pageMapping[selectedStyle] && pageMapping[selectedStyle][selectedMagentaArea];
+                        if (nextPage) {
+                            window.location.href = nextPage;
+                        }
+                    });
+                } else {
+                    nextButton.style.display = "none";
+                }
+            }
+
+            areas.forEach(area => {
+                const areaAlt = area.getAttribute("alt");
+
+                if (!glowingAreas.includes(areaAlt)) return;
+
+                area.addEventListener("mouseover", () => {
+                    hoverOverlay.innerHTML = "";
+                    const glowClass = "hover-area-glow";
+                    let textX = 0, textY = 0;
+                    const coords = area.getAttribute("coords").split(",").map(Number);
+                    const shape = area.getAttribute("shape");
+
+                    if (shape === "rect") {
+                        const [x1, y1, x2, y2] = coords;
+                        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                        rect.setAttribute("x", x1);
+                        rect.setAttribute("y", y1);
+                        rect.setAttribute("width", x2 - x1);
+                        rect.setAttribute("height", y2 - y1);
+                        rect.classList.add("hover-area", glowClass);
+                        hoverOverlay.appendChild(rect);
+                        textX = x1;
+                        textY = y1 - 10;
+                    } else if (shape === "poly") {
+                        const points = coords.reduce((acc, val, i) => acc + (i % 2 === 0 ? `${val},` : `${val} `), "").trim();
+                        const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                        polygon.setAttribute("points", points);
+                        polygon.classList.add("hover-area", glowClass);
+                        hoverOverlay.appendChild(polygon);
+                        textX = coords[0];
+                        textY = coords[1] - 10;
+                    }
+
+                    const textContent = areaTextMapping[areaAlt] || "Default Text";
+                    const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    textElement.setAttribute("x", textX);
+                    textElement.setAttribute("y", textY);
+                    textElement.textContent = textContent;
+                    textElement.setAttribute("font-size", "16");
+                    textElement.setAttribute("fill", "black");
+                    hoverOverlay.appendChild(textElement);
+                });
+
+                area.addEventListener("click", () => {
+                    hoverOverlay.innerHTML = "";
+                    selectedMagentaArea = areaAlt;
+                    updatePrompt();
+                });
+            });
+
+            options.forEach(option => {
+                option.addEventListener("click", () => {
+                    options.forEach(opt => opt.classList.remove("selected"));
+                    option.classList.add("selected");
+                    selectedStyle = option.getAttribute("data-style");
+                    updatePrompt();
+                });
+            });
+
+            updatePrompt(); 
+        });
+
+        </script>
+    </body>
+</html>

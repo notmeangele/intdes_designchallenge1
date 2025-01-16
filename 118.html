@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMDA Bite-Sized AI Content</title>
+  <style>
+
+        html {
+        overflow: hidden; 
+        }  
+
+    #container {
+      background-color: rgb(101, 230, 206);
+      width: 960px;
+      height: 540px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: 20px;
+      position: relative;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      row-gap: 1em;
+      font-family: sans-serif;
+    }
+
+
+    .back-button, .next-button {
+      text-decoration: none;
+      font-size: 16px;
+      position: absolute;
+      top: 40px;
+      transition: color 0.3s ease;
+      z-index: 10;
+    }
+
+    .back-button {
+      color: #b00000;
+      left: 40px;
+    }
+
+    .back-button:hover {
+      text-decoration: underline;
+      color: #db0404;
+    }
+
+    .next-button {
+      color: #008c23;
+      right: 40px;
+      display: none;
+    }
+
+    .next-button:hover {
+      text-decoration: underline;
+      color: #03b92a;
+    }
+
+    video {
+      display: block;
+      margin: 20px auto;
+      image-rendering: pixelated;
+      width: 400px;
+      height: 225px;
+      transition: filter 0.5s, image-rendering 0.5s;
+      pointer-events: none;
+    }
+
+    #slider-container {
+      width: 80%;
+      max-width: 400px;
+      margin: 20px auto;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .percentage {
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+
+    .rain-image {
+      position: absolute;
+      top: -50px;
+      animation: fall linear 5s;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <a href="117.html" class="back-button">&larr; Back</a>
+    <a href="125.html" class="next-button" id="next-button">Next &rarr;</a>
+    
+    <video id="video" muted>
+      <source src="118_video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <div id="slider-container">
+      <input id="slider" type="range" min="1" max="100" value="1">
+    </div>
+
+    <div class="percentage" id="percentage">Resolution: 0%</div>
+    <div class="message" id="message">Slide over to improve the video resolution</div>
+  </div>
+
+  <script>
+    const video = document.getElementById("video");
+    const slider = document.getElementById("slider");
+    const message = document.getElementById("message");
+    const percentage = document.getElementById("percentage");
+    const nextButton = document.getElementById("next-button");
+
+    slider.addEventListener("input", () => {
+      const value = parseInt(slider.value);
+      percentage.textContent = `Resolution: ${value}%`;
+
+      const maxBlur = 10;
+      const blurValue = Math.max(0, maxBlur - (value / 10));
+      video.style.filter = `blur(${blurValue}px)`;
+      video.style.imageRendering = value >= 50 ? "auto" : "pixelated";
+
+      if (value >= 100) {
+        video.style.filter = "none";
+        video.controls = true;
+        video.style.pointerEvents = "auto";
+        message.textContent = "Congratulations! You did it!";
+        nextButton.style.display = "inline-block";
+        rainImages("118_cafe_rain.png");
+      } else {
+        message.textContent = "Slide over to improve the video resolution";
+        video.controls = false;
+        video.style.pointerEvents = "none";
+        nextButton.style.display = "none";
+      }
+    });
+
+    function rainImages(imageSrc) {
+            for (let i = 0; i < 20; i++) {
+                const img = document.createElement('img');
+                img.src = imageSrc;
+                img.classList.add('rain-image');
+                img.style.left = `${Math.random() * 100}%`;
+                img.style.animationDuration = `${2 + Math.random() * 3}s`;
+                img.style.position = 'absolute';
+                img.style.width = `${Math.random() * 30 + 20}px`; 
+                img.style.height = 'auto';
+                img.style.top = '-50px';
+                img.animationName = 'fall';
+                img.style.animationDelay = `${Math.random() * 2}s`;
+                img.style.pointerEvents = 'none';
+                
+
+                console.log(`Creating rain image: ${imageSrc}, animation duration: ${img.style.animationDuration}`);
+
+                document.body.appendChild(img);
+
+                img.addEventListener('animationend', () => {
+                    console.log(`Image animation ended, removing: ${img.src}`);
+                    img.remove();
+                });
+            }
+        }
+
+  </script>
+</body>
+</html>
+

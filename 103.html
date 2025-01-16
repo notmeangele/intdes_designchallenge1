@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>IMDA Bite-Sized AI Content</title>
+        <style>
+
+        html {
+            overflow: hidden; 
+        }
+        
+            #container {
+                background-color: rgb(101, 230, 206);
+                width: 960px;
+                height: 540px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden; 
+                box-sizing: border-box; 
+                padding: 20px; 
+                position: relative;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f3f3f3; 
+                font-family: Arial, sans-serif;
+            }
+
+            .back-button,
+            .next-button {
+                text-decoration: none;
+                font-size: 16px;
+                position: absolute;
+                top: 40px; 
+                transition: color 0.3s ease;
+                z-index: 10;
+            }
+
+            .back-button {
+                color: #b00000; 
+                left: 40px; 
+            }
+
+            .back-button:hover {
+                text-decoration: underline;
+                color: #db0404; 
+            }
+
+            .next-button {
+                color: #008c23; 
+                right: 40px; 
+                display: none; 
+            }
+
+            .next-button:hover {
+                text-decoration: underline;
+                color: #03b92a; 
+            }
+
+            .center-image-container {
+                position: relative; 
+                width: 808px; 
+                height: 268px;
+                margin-top: 20px; 
+                overflow: hidden; 
+            }
+
+            .center-image-container img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .tooltip {
+                position: absolute;
+                background-color: black;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-size: 14px;
+                display: none; 
+                white-space: nowrap;
+                pointer-events: none; 
+            }
+
+            .hover-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 10;
+            }
+
+            .hover-area {
+                fill: rgba(255, 0, 255, 0.5); 
+                pointer-events: none;
+            }
+
+            .selected-area {
+                fill: rgba(255, 0, 255, 0.5);
+                stroke: magenta;
+                stroke-width: 3;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <a href="102.html" class="back-button"> ← Back </a>
+            <a href="#" class="next-button" id="next-button"> Next → </a>
+            <div class="center-image-container">
+                <img src="103_pic.png" usemap="#image-map">
+                <svg class="hover-overlay"></svg> 
+                <div id="tooltip" class="tooltip"></div>
+                <map name="image-map">
+                    <area target="" alt="Area 1" title="Area 1" href="#" coords="150,145,134,152,151,204,165,177,156,137,166,126,177,140,179,183,166,206,144,222,123,233,98,232,94,226,86,225,78,218,73,210,75,193,78,183,82,172,86,156,77,152,66,145,68,138,72,133,82,104,90,86,102,108,121,102,132,89,142,111,151,128" shape="poly" data-tooltip="This is Area 1">
+                    <area target="" alt="Area 2" title="Area 2" href="#" coords="387,64,596,190" shape="rect" data-tooltip="This is Area 2">
+                    <area target="" alt="Area 3" title="Area 3" href="#" coords="618,160,694,242" shape="rect" data-tooltip="This is Area 3">
+                    <area coords="291,162,362,243" shape="rect" onclick="alert('Your potted plant. So far, no problems with it...')">
+                    <area coords="33,103,78,228" shape="rect" onclick="alert('Thank goodness your cat did not break that; it would be a lot of cleaning to do...')">
+                    <area target="" alt="" title="" href="" coords="141,167,188,230" shape="rect" onclick="alert('Looks like you would have to keep your money somewhere else if your cat broke it...')">
+                    <area target="" alt="" title="" href="" coords="644,138,686,182,696,169,696,148,702,138,690,125,678,129,665,130,653,129,648,132" shape="rect" onclick="alert('Your study light. Want to turn it on...?')">
+                    <area target="" alt="" title="" href="" coords="726,152,742,218" shape="rect" onclick="alert('Your study light. Want to turn it on...?')">
+                    <area target="" alt="" title="" href="" coords="685,217,758,241" shape="rect" onclick="alert('Your study light. Want to turn it on...?')">
+                    <area target="" alt="" title="" href="" coords="696,126,728,160,732,155,701,125" shape="poly" onclick="alert('Your study light. Want to turn it on...?')">
+                    <area target="" alt="" title="" href="" coords="692,126,702,132" shape="rect" onclick="alert('Your study light. Want to turn it on...?')">
+                </map>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+            const areas = document.querySelectorAll("area");
+            const hoverOverlay = document.querySelector(".hover-overlay");
+            const nextButton = document.getElementById("next-button");
+            const glowingAreas = ["Area 1", "Area 2", "Area 3"];
+            const areaTextMapping = {
+                "Area 1": "A poem about cats",
+                "Area 2": "A business email",
+                "Area 3": "An itinerary for Greece",
+            };
+            const targetAreas = {
+                "Area 1": "104.html",
+                "Area 2": "104.html",
+                "Area 3": "104.html",
+            };
+            let selectedElement = null;
+
+            areas.forEach(area => {
+                area.addEventListener("click", () => {
+                    const areaAlt = area.getAttribute("alt");
+
+                    if (glowingAreas.includes(areaAlt)) {
+                        localStorage.setItem("selectedOption", areaAlt);
+                    }
+                });
+            });
+
+            areas.forEach(area => {
+                const coords = area.getAttribute("coords").split(",").map(Number);
+                const shape = area.getAttribute("shape");
+                const areaAlt = area.getAttribute("alt");
+
+                if (!areaAlt || !glowingAreas.includes(areaAlt)) return;
+
+                area.addEventListener("mouseover", () => {
+                    if (selectedElement?.getAttribute("alt") === areaAlt) return;
+
+                    hoverOverlay.innerHTML = "";
+
+                    const glowClass = "hover-area-glow";
+                    let textX = 0, textY = 0;
+
+                    if (shape === "rect") {
+                        const [x1, y1, x2, y2] = coords;
+                        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                        rect.setAttribute("x", x1);
+                        rect.setAttribute("y", y1);
+                        rect.setAttribute("width", x2 - x1);
+                        rect.setAttribute("height", y2 - y1);
+                        rect.classList.add("hover-area", glowClass);
+                        hoverOverlay.appendChild(rect);
+                        textX = x1;
+                        textY = y1 - 10;
+                    } else if (shape === "poly") {
+                        const points = coords.reduce((acc, val, i) => acc + (i % 2 === 0 ? `${val},` : `${val} `), "").trim();
+                        const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                        polygon.setAttribute("points", points);
+                        polygon.classList.add("hover-area", glowClass);
+                        hoverOverlay.appendChild(polygon);
+                        textX = coords[0];
+                        textY = coords[1] - 10;
+                    }
+
+                    const textContent = areaTextMapping[areaAlt] || "Default Text";
+                    const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    textElement.setAttribute("x", textX);
+                    textElement.setAttribute("y", textY);
+                    textElement.textContent = textContent;
+                    textElement.setAttribute("font-size", "16");
+                    textElement.setAttribute("fill", "black");
+                    hoverOverlay.appendChild(textElement);
+                });
+
+                area.addEventListener("mouseout", () => {
+                    if (!selectedElement || selectedElement?.getAttribute("alt") === areaAlt) {
+                        hoverOverlay.innerHTML = "";
+                    }
+                });
+
+                area.addEventListener("click", () => {
+                    hoverOverlay.innerHTML = "";
+
+                    if (selectedElement) {
+                        selectedElement.classList.remove("selected-area"); 
+                    }
+
+                    if (glowingAreas.includes(areaAlt)) {
+                        selectedElement = area;
+                        area.classList.add("selected-area"); 
+
+                        if (targetAreas[areaAlt]) {
+                            nextButton.setAttribute("href", targetAreas[areaAlt]);
+                            nextButton.style.display = "block";
+                        }
+                    }
+                });
+            });
+        });
+
+        </script>
+    </body>
+</html>
+

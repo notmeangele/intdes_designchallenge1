@@ -1,0 +1,191 @@
+<html>
+    <head>
+        <title>IMDA Bite-Sized AI Content</title>
+        <style>
+
+            html {
+            overflow: hidden; 
+            }
+
+            #container {
+                background-color: rgb(101, 230, 206);
+                width: 960px;
+                height: 540px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden; 
+                box-sizing: border-box; 
+                padding: 20px; 
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f3f3f3; 
+                font-family: Arial, sans-serif;
+            }
+
+            .back-button {
+                text-decoration: none;
+                color: #b00000; 
+                font-size: 16px;
+                display: inline-block;
+                position: relative;
+                top: 0px;
+                left: -380px; 
+                transition: color 0.3s ease;
+                z-index: 10;
+                
+            }
+
+            .back-button:hover {
+                text-decoration: underline;
+                color: #db0404; 
+            }
+
+            .back-button::before {
+                margin-right: 8px;
+                font-size: 16px;
+                display: inline-block;
+            }
+
+            .center-image {
+                max-width: 80%;
+                max-height: 40%; 
+                height: auto;
+                margin-bottom: 0px;
+            }
+
+            .description{
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: 400;
+                font-style: normal;
+                font-size: 16px;
+                color: #000; 
+                text-align: center;
+                margin-top: 30px;
+                max-width: 67%;
+                height: 200px;
+                overflow-y: auto;
+            }
+            
+            span {
+            border-right: .05em solid;
+            animation: caret 1s steps(1) infinite;
+            }
+
+            @keyframes caret {
+            50% {
+                border-color: transparent;
+            }
+            }
+
+            .description br{
+            content: "";
+            display: block; 
+            margin-bottom: 20px; 
+            }
+
+            .options-container {
+            display: none;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            width: 800px;
+            }
+
+            .option {
+            padding: 10px 20px; 
+            background-color: #007bff;
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            text-align: center; 
+            cursor: pointer; 
+            }
+
+            .option:hover {
+            background-color: #0056b3; 
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <a href="100.html" class="back-button"> ← Back </a>
+            <img src="101_pic.png" class="center-image">
+            <p class= "description"></p>
+            <div class="options-container">
+                <button class="option" onclick='window.location.href="102.html"'>A piece of text</button>
+                <button class="option"  onclick='window.location.href="105.html"'>An image</button>
+                <button class="option" onclick='window.location.href="116.html"'>A video</button>
+                <button class="option" onclick='window.location.href="122.html"'>An audio clip</button>
+            </div>
+            <div id="enter" p style="font-weight: bold;">
+                <p> Press 'Enter' to skip text animation </p>
+            </div>
+        </div>
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            var dataText = [
+                "Today's a lazy afternoon. You are at home, in your room. Wanting to kill some of your boredom, you log onto your computer to see what you can do. <br> After some mindless Internet surfing, a thought strikes you. You have recently heard about Gen AI, and decide to mess around with it to see what it can do. <br> You decide to generate..."
+            ];
+
+            var animationActive = true; 
+
+            function typeWriter(text, i, fnCallback) {
+                if (!animationActive) {
+                    document.querySelector(".description").innerHTML = text + '<span aria-hidden="true"></span>';
+                    if (typeof fnCallback === "function") fnCallback();
+                    return;
+                }
+
+                if (i < text.length) {
+                    document.querySelector(".description").innerHTML = text.substring(0, i + 1) + '<span aria-hidden="true"></span>';
+                    setTimeout(function () {
+                        typeWriter(text, i + 1, fnCallback);
+                    }, 25);
+                } else if (typeof fnCallback === "function") {
+                    setTimeout(fnCallback, 700);
+                }
+            }
+
+            function StartTextAnimation(i) {
+                if (i < dataText.length) {
+                    typeWriter(dataText[i], 0, function () {
+                        StartTextAnimation(i + 1);
+                    });
+                }
+            }
+
+            function showOptions() {
+                document.querySelector(".options-container").style.display = 'block';
+                document.querySelector(".options-container").style.textAlign = 'center';  
+            }
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    animationActive = false; 
+                    document.querySelector(".description").innerHTML = dataText.join('') + '<span aria-hidden="true"></span>';
+                    showOptions();
+                }
+            });
+
+            StartTextAnimation(0);
+            setTimeout(function() {
+                if (animationActive) {
+                    showOptions(); 
+                }
+            }, 9500); 
+            });
+
+        </script>
+    </body>
+</html>

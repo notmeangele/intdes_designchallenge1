@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Video with Options</title>
+  <style>
+
+    html {
+        overflow: hidden; 
+        }  
+
+    #container {
+      background-color: rgb(101, 230, 206);
+      width: 960px;
+      height: 540px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: 20px;
+      position: relative;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      row-gap: 1em;
+      font-family: sans-serif;
+    }
+
+    .back-button, .next-button {
+      text-decoration: none;
+      font-size: 16px;
+      position: absolute;
+      top: 40px;
+      transition: color 0.3s ease;
+      z-index: 10;
+    }
+
+    .back-button {
+      color: #b00000;
+      left: 40px;
+    }
+
+    .back-button:hover {
+      text-decoration: underline;
+      color: #db0404;
+    }
+
+    .next-button {
+      color: #008c23;
+      right: 40px;
+      display: none;
+    }
+
+    .next-button:hover {
+      text-decoration: underline;
+      color: #03b92a;
+    }
+
+    video {
+      display: block;
+      margin: 20px auto;
+      image-rendering: pixelated;
+      width: 300px;
+      height: 225px;
+      transition: filter 0.5s, image-rendering 0.5s;
+      pointer-events: none;
+    }
+
+    .placeholder-image {
+      width: 300px;
+      height: 225px;
+      background-color: #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      color: #666;
+      margin: 20px auto;
+    }
+
+    .options-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      max-width: 300px;
+    }
+
+    .option-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .option-button:hover {
+      background-color: #0056b3;
+    }
+
+    .selected {
+      background-color: #0056b3; 
+    }
+
+
+    #slider-container {
+      display: none;
+      width: 80%;
+      max-width: 400px;
+      margin: 20px auto;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .percentage {
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .rain-image {
+      position: absolute;
+      top: 0;
+      left: calc(50% - 20px);
+      animation: fall linear 5s;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <a href="120.html" class="back-button"> ← Back </a>
+    <a href="125.html" class="next-button" id="next-button"> Next → </a>
+
+    <div id="video-container">
+      <div class="placeholder-image" id="placeholder">Select an option to load the video</div>
+      <video id="video" controls style="display: none; pointer-events: none;">
+        <source src="" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <div id="slider-container">
+      <input id="slider" type="range" min="0" max="100" value="1">
+      <div class="percentage" id="percentage">Resolution: 0%</div>
+    </div>
+
+    <div class="options-container">
+      <button class="option-button" data-video="121_crush.mp4">Crush</button>
+      <button class="option-button" data-video="121_melt.mp4">Melt</button>
+      <button class="option-button" data-video="121_cakeify.mp4">Cake-ify</button>
+      <button class="option-button" data-video="121_explode.mp4">Explode</button>
+      <button class="option-button" data-video="121_squish.mp4"> Squish</button>
+      <button class="option-button" data-video="121_inflate.mp4">Inflate</button>
+    </div>
+  </div>
+
+  <script>
+      const video = document.getElementById("video");
+      const slider = document.getElementById("slider");
+      const percentage = document.getElementById("percentage");
+      const nextButton = document.getElementById("next-button");
+      const buttons = document.querySelectorAll(".option-button");
+      const sliderContainer = document.getElementById("slider-container");
+      const placeholder = document.getElementById("placeholder");
+
+      let nextButtonVisible = false;
+      let currentResolution = 1;
+      let rainDisplayed = false; 
+
+      buttons.forEach(button => {
+        button.addEventListener("click", () => {
+          buttons.forEach(b => b.classList.remove("selected"));
+          button.classList.add("selected");
+
+          const videoSrc = button.getAttribute("data-video");
+          video.querySelector("source").src = videoSrc;
+          video.load();
+          video.style.display = "block";
+          video.style.pointerEvents = "none";
+          sliderContainer.style.display = "block";
+          placeholder.style.display = "none";
+          video.style.filter = `blur(${10 - currentResolution / 10}px)`;
+          percentage.textContent = `Resolution: ${currentResolution}%`;
+          nextButton.style.display = currentResolution >= 100 ? "inline-block" : "none";
+          video.controls = currentResolution >= 100;
+          video.style.pointerEvents = currentResolution >= 100 ? "auto" : "none";
+        });
+      });
+
+      slider.addEventListener("input", () => {
+        const value = parseInt(slider.value);
+        percentage.textContent = `Resolution: ${value}%`;
+
+        const maxBlur = 10;
+        const blurValue = Math.max(0, maxBlur - (value / 10));
+        video.style.filter = `blur(${blurValue}px)`;
+
+        currentResolution = value;
+
+        if (value >= 100) {
+          video.style.filter = "none";
+          video.controls = true;
+          video.style.pointerEvents = "auto";
+          
+          if (!rainDisplayed) {
+            rainImages("121_murasaki_rain.png");
+            rainDisplayed = true; 
+          }
+
+          if (!nextButtonVisible) {
+            nextButton.style.display = "inline-block";
+            nextButtonVisible = true;
+          }
+        } else {
+          video.controls = false;
+          video.style.pointerEvents = "none";
+          nextButton.style.display = "none";
+        }
+      });
+
+      function rainImages(imageSrc) {
+        for (let i = 0; i < 20; i++) {
+          const img = document.createElement('img');
+          img.src = imageSrc;
+          img.classList.add('rain-image');
+          img.style.left = `${Math.random() * 100}%`;
+          img.style.animationDuration = `${2 + Math.random() * 3}s`;
+          img.style.position = 'absolute';
+          img.style.width = `${Math.random() * 30 + 20}px`; 
+          img.style.height = 'auto';
+          img.style.top = '-50px';
+          img.animationName = 'fall';
+          img.style.animationDelay = `${Math.random() * 2}s`;
+          img.style.pointerEvents = 'none';
+
+          console.log(`Creating rain image: ${imageSrc}, animation duration: ${img.style.animationDuration}`);
+
+          document.body.appendChild(img);
+
+          img.addEventListener('animationend', () => {
+            console.log(`Image animation ended, removing: ${img.src}`);
+            img.remove();
+          });
+        }
+      }
+</script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>IMDA Bite-Sized AI Content</title>
+        <style>
+        html {
+        overflow: hidden; 
+        }  
+
+            #container {
+                background-color: rgb(101, 230, 206);
+                width: 960px;
+                height: 540px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden; 
+                box-sizing: border-box; 
+                padding: 20px; 
+                position: relative;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f3f3f3; 
+                font-family: Arial, sans-serif;
+            }
+
+            .back-button,
+            .next-button {
+                text-decoration: none;
+                font-size: 16px;
+                position: absolute;
+                top: 40px; 
+                transition: color 0.3s ease;
+                z-index: 10;
+            }
+
+            .back-button {
+                color: #b00000; 
+                left: 40px; 
+            }
+
+            .back-button:hover {
+                text-decoration: underline;
+                color: #db0404; 
+            }
+
+            .next-button {
+                color: #008c23; 
+                right: 40px; 
+                display: none; 
+            }
+
+            .next-button:hover {
+                text-decoration: underline;
+                color: #03b92a; 
+            }
+
+            .center-image-container {
+                position: relative; 
+                width: 808px; 
+                height: 268px;
+                margin-top: 20px; 
+                overflow: hidden; 
+            }
+
+            .center-image-container img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .tooltip {
+                position: absolute;
+                background-color: black;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-size: 14px;
+                display: none; 
+                white-space: nowrap;
+                pointer-events: none; 
+            }
+
+            .hover-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 10;
+            }
+
+            .hover-area {
+                fill: rgba(255, 0, 255, 0.5); 
+                pointer-events: none;
+            }
+
+            .selected-area {
+                fill: rgba(255, 0, 255, 0.5);
+                stroke: magenta;
+                stroke-width: 3;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <a href="116.html" class="back-button"> ← Back </a>
+            <a href="#" class="next-button" id="next-button"> Next → </a>
+            <div class="center-image-container">
+                <img src="117_pic.png" usemap="#image-map">
+                <svg class="hover-overlay"></svg> 
+                <div id="tooltip" class="tooltip"></div>
+                <map name="image-map">
+                    <area target="" alt="Area 1" title="" href="#" coords="59,34,228,239" shape="rect" data-tooltip="This is Area 1">
+                    <area target="" alt="Area 2" title="" href="#" coords="332,34,501,237" shape="rect" data-tooltip="This is Area 2">
+                    <area target="" alt="Area 3" title="" href="#" coords="605,35,753,236" shape="rect" data-tooltip="This is Area 3">
+                </map>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+            const areas = document.querySelectorAll("area");
+            const hoverOverlay = document.querySelector(".hover-overlay");
+            const nextButton = document.getElementById("next-button");
+            const glowingAreas = ["Area 1", "Area 2", "Area 3"];
+            const areaTextMapping = {
+                "Area 1": "A live-action shot of two people in a cafe",
+                "Area 2": "Motion graphics for a lyric video",
+                "Area 3": "Generate from a photo!",
+            };
+            const targetAreas = {
+                "Area 1": "118.html",
+                "Area 2": "119.html",
+                "Area 3": "120.html",
+            };
+            let selectedElement = null;
+
+            areas.forEach(area => {
+                area.addEventListener("click", () => {
+                    const areaAlt = area.getAttribute("alt");
+
+                    if (glowingAreas.includes(areaAlt)) {
+                        localStorage.setItem("selectedOption", areaAlt);
+                    }
+                });
+            });
+
+            areas.forEach(area => {
+                const coords = area.getAttribute("coords").split(",").map(Number);
+                const shape = area.getAttribute("shape");
+                const areaAlt = area.getAttribute("alt");
+
+                if (!areaAlt || !glowingAreas.includes(areaAlt)) return;
+
+                area.addEventListener("mouseover", () => {
+                    if (selectedElement?.getAttribute("alt") === areaAlt) return;
+
+                    hoverOverlay.innerHTML = "";
+
+                    const glowClass = "hover-area-glow";
+                    let textX = 0, textY = 0;
+
+                    if (shape === "rect") {
+                        const [x1, y1, x2, y2] = coords;
+                        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                        rect.setAttribute("x", x1);
+                        rect.setAttribute("y", y1);
+                        rect.setAttribute("width", x2 - x1);
+                        rect.setAttribute("height", y2 - y1);
+                        rect.classList.add("hover-area", glowClass);
+                        hoverOverlay.appendChild(rect);
+                        textX = x1;
+                        textY = y1 - 10;
+                    } else if (shape === "poly") {
+                        const points = coords.reduce((acc, val, i) => acc + (i % 2 === 0 ? `${val},` : `${val} `), "").trim();
+                        const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                        polygon.setAttribute("points", points);
+                        polygon.classList.add("hover-area", glowClass);
+                        hoverOverlay.appendChild(polygon);
+                        textX = coords[0];
+                        textY = coords[1] - 10;
+                    }
+
+                    const textContent = areaTextMapping[areaAlt] || "Default Text";
+                    const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    textElement.setAttribute("x", textX);
+                    textElement.setAttribute("y", textY);
+                    textElement.textContent = textContent;
+                    textElement.setAttribute("font-size", "16");
+                    textElement.setAttribute("fill", "black");
+                    hoverOverlay.appendChild(textElement);
+                });
+
+                area.addEventListener("mouseout", () => {
+                    if (!selectedElement || selectedElement?.getAttribute("alt") === areaAlt) {
+                        hoverOverlay.innerHTML = "";
+                    }
+                });
+
+                area.addEventListener("click", () => {
+                    hoverOverlay.innerHTML = "";
+
+                    if (selectedElement) {
+                        selectedElement.classList.remove("selected-area"); 
+                    }
+
+                    if (glowingAreas.includes(areaAlt)) {
+                        selectedElement = area;
+                        area.classList.add("selected-area"); 
+
+                        if (targetAreas[areaAlt]) {
+                            nextButton.setAttribute("href", targetAreas[areaAlt]);
+                            nextButton.style.display = "block";
+                        }
+                    }
+                });
+            });
+        });
+
+        </script>
+    </body>
+</html>
+

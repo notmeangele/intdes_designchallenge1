@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<head>
+    <title>IMDA Bite-Sized AI Content</title>
+    <style>
+
+        html {
+            overflow: hidden; 
+        }   
+
+       #container {
+                background-color: rgb(101, 230, 206);
+                width: 960px;
+                height: 540px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden; 
+                box-sizing: border-box; 
+                padding: 20px; 
+                margin-top: 10px;
+                position: relative;
+            }
+        
+            body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f3f3f3; 
+                font-family: Arial, sans-serif;
+            }
+        
+            .button-container {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                position: absolute;
+                top: 20px; 
+                left: 0;
+                padding: 0 20px; 
+            }
+        
+            .back-button {
+                text-decoration: none;
+                color: #b00000;
+                font-size: 16px;
+                transition: color 0.3s ease;
+                position: absolute;
+                left: 50px; 
+                top: 30px;
+            }
+        
+            .back-button:hover {
+                text-decoration: underline;
+                color: #db0404;
+            }
+        
+            .next-button {
+                text-decoration: none;
+                color: #008c23; 
+                font-size: 16px;
+                transition: color 0.3s ease;
+                position: absolute;
+                right: 50px; 
+                top: 30px; 
+                display: none;
+            }
+        
+            .next-button:hover {
+                text-decoration: underline;
+                color: #03b92a; 
+            }
+        
+            .center-image {
+                max-width: 66%; 
+                max-height: 33%; 
+                height: auto; 
+                margin-top: 5px; 
+            }
+        
+            .description {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: 400;
+                font-style: normal;
+                font-size: 16px;
+                color: #000; 
+                text-align: center;
+                margin-top: 40px; 
+                max-width: 67%;
+                height: 200px;
+                overflow-y: auto;
+            }
+        
+            span {
+                border-right: .05em solid;
+                animation: caret 1s steps(1) infinite;
+            }
+        
+            @keyframes caret {
+                50% {
+                    border-color: transparent;
+                }
+            }
+        
+            .description br {
+                content: "";
+                display: block; 
+                margin-bottom: 20px; 
+            }
+
+            .input-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px; 
+                margin-top: 10px; 
+            }
+
+            .input-box {
+                flex: 1; 
+                padding: 10px;
+                font-size: 18px;
+                border: 2px solid #ccc;
+                border-radius: 5px;
+                box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            .input-box:focus {
+                border-color: #008c23;
+                outline: none;
+            }
+
+            .submit-btn {
+                padding: 10px 20px;
+                font-size: 16px;
+                color: white;
+                background-color: #008c23;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            .submit-btn:hover {
+                background-color: #03b92a;
+            }
+
+            .error-message {
+            color: red;
+            font-size: 16px;
+            display: none;
+        }
+
+        .attachment-message {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #008c23;
+            cursor: pointer;
+            display: none;
+            z-index: 15; 
+            position: relative; 
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 0;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+            width: 50%;
+            max-width: 600px;
+            text-align: center;
+            overflow: auto; 
+            max-height: 90vh; 
+            box-sizing: border-box;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+
+        .close-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            background-color: #ff0000;
+        }
+
+        #rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; 
+            overflow: hidden;
+            z-index: 1; 
+        }
+
+        .rain-image {
+            position: absolute;
+            top: 0;
+            left: calc(50% - 20px); 
+            animation: fall linear 5s;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+    <body>
+        <div id="rain-container"></div> 
+        <div id="container">
+            <a href="103.html" class="back-button"> ← Back </a>
+            <a href="125.html" class="next-button"> Next → </a>
+            <img src="104_interface.png" class="center-image">
+            <p class="description"></p>
+            <div class="input-container" style="display: none;">
+                <input type="text" class="input-box" id="userInput" placeholder="Type it here!">
+                <button class="submit-btn" id="submitBtn">Submit</button>
+            </div>
+            <p id="errorMessage" class="error-message">Incorrect text. Please try again.</p>
+            <p id="attachmentMessage" class="attachment-message">Congratulations! <u><b>Here's the output</b></u>!</p>
+            <div id="modal" class="modal-overlay">
+                <div class="modal-content">
+                    <img src="104_outputpic.png">
+                    <button class="close-btn" id="closeModal">Close</button>
+                </div>
+            </div> 
+            <div class="input-container" style="display: none;">
+                <input type="text" class="input-box" id="userInput" placeholder="Type it here!">
+                <button class="submit-btn" id="submitBtn">Submit</button>
+            </div>
+            <p style="text-align: center; font-weight: bold;">Press 'Enter' to skip text animation</p>             
+        </div>
+        <script>
+           document.addEventListener('DOMContentLoaded', function () {
+            var selectedOption = localStorage.getItem("selectedOption") || "nothing";
+            var areaTextMapping = {
+                "Area 1": "a poem about cats",
+                "Area 2": "a business email",
+                "Area 3": "an itinerary for Greece",
+            };
+            var rainImageMapping = {
+                "a poem about cats": "104_cat_rain.png",
+                "a business email": "104_email_rain.png",
+                "an itinerary for Greece": "104_greece_rain.png",
+            };
+            var modalImageMapping = {
+                "a poem about cats": "104_cat_poem.png",
+                "a business email": "104_business_email.png",
+                "an itinerary for Greece": "104_greece_itinerary.png",
+            };
+
+            var selectedText = areaTextMapping[selectedOption] || "something interesting";
+
+            var dataText = [
+                `You have decided to make ${selectedText}. <br> Going to your text generator, you decide to type the input into the text box, which tells you to type your text inside. <br> Type in "${selectedText}" to generate your text!`
+            ];
+
+            var animationActive = true;
+
+            function typeWriter(text, i, fnCallback) {
+                if (!animationActive) {
+                    document.querySelector(".description").innerHTML = text + '<span aria-hidden="true"></span>';
+                    if (typeof fnCallback === "function") fnCallback();
+                    return;
+                }
+                if (i < text.length) {
+                    document.querySelector(".description").innerHTML = text.substring(0, i + 1) + '<span aria-hidden="true"></span>';
+                    setTimeout(function () {
+                        typeWriter(text, i + 1, fnCallback);
+                    }, 25);
+                } else if (typeof fnCallback === "function") {
+                    setTimeout(fnCallback, 700);
+                    showInputContainer();
+                }
+            }
+
+            function StartTextAnimation(i) {
+                if (i < dataText.length) {
+                    typeWriter(dataText[i], 0, function () {
+                        StartTextAnimation(i + 1);
+                    });
+                }
+            }
+
+            function showInputContainer() {
+                const inputContainer = document.querySelector('.input-container');
+                if (inputContainer) {
+                    inputContainer.style.display = 'block';
+                    const inputBox = document.getElementById('userInput');
+                    if (inputBox) {
+                        inputBox.focus();
+                    }
+                }
+            }
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    animationActive = false;
+                    document.querySelector(".description").innerHTML = dataText.join('') + '<span aria-hidden="true"></span>';
+                    showInputContainer();
+                }
+            });
+
+            StartTextAnimation(0);
+
+            const correctText = selectedText;
+            const submitBtn = document.getElementById('submitBtn');
+            const userInput = document.getElementById('userInput');
+            const errorMessage = document.getElementById('errorMessage');
+            const attachmentMessage = document.getElementById('attachmentMessage');
+            const modal = document.getElementById('modal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const nextButton = document.querySelector('.next-button');
+            const rainContainer = document.getElementById('rain-container');
+
+            let rainInterval;
+            let rainTimeout;
+
+            function startImageRain(imageSrc, duration) {
+                clearInterval(rainInterval);
+
+                rainInterval = setInterval(() => {
+                    const rainImage = document.createElement('img');
+                    rainImage.src = imageSrc;
+                    rainImage.classList.add('rain-image');
+
+                    rainImage.style.position = 'absolute';
+                    rainImage.style.width = `${Math.random() * 30 + 20}px`; 
+                    rainImage.style.height = 'auto';
+                    rainImage.style.left = `${Math.random() * 100}%`;
+                    rainImage.style.top = '-50px';
+                    rainImage.style.animationName = 'fall';
+                    rainImage.style.animationDuration = `${Math.random() * 2 + 3}s`;
+                    rainImage.style.animationDelay = `${Math.random() * 2}s`;
+                    rainImage.style.pointerEvents = 'none';
+
+                    rainContainer.appendChild(rainImage);
+
+                    rainImage.addEventListener('animationend', () => {
+                        rainImage.remove();
+                    });
+                }, 300);
+
+                rainTimeout = setTimeout(() => {
+                    clearInterval(rainInterval);
+                }, duration);
+            }
+
+            function stopImageRain() {
+                clearInterval(rainInterval);
+                clearTimeout(rainTimeout);
+                rainContainer.innerHTML = '';
+            }
+
+            submitBtn.addEventListener('click', function () {
+                const inputValue = userInput.value.trim().toLowerCase();
+
+                if (inputValue === correctText.toLowerCase()) {
+                    errorMessage.style.display = 'none';
+                    attachmentMessage.style.display = 'block';
+                    nextButton.style.display = 'inline-block';
+                } else {
+                    errorMessage.style.display = 'block';
+                    attachmentMessage.style.display = 'none';
+                    nextButton.style.display = 'none';
+                }
+            });
+
+            userInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    submitBtn.click();
+                }
+            });
+
+            attachmentMessage.addEventListener('click', function () {
+                const rainImage = rainImageMapping[correctText] || "default_rain.png";
+                const modalImage = modalImageMapping[correctText] || "default_modal.png";
+
+                modal.querySelector('img').src = modalImage;
+                modal.style.display = 'flex';
+                attachmentMessage.style.display = 'none';
+
+                startImageRain(rainImage, 5000);
+            });
+
+            closeModalBtn.addEventListener('click', function () {
+                modal.style.display = 'none';
+                stopImageRain();
+            });
+
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    stopImageRain();
+                }
+            });
+
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes fall {
+                    0% { transform: translateY(0); opacity: 1; }
+                    100% { transform: translateY(100vh); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        </script>
+    </body>
+</html>
